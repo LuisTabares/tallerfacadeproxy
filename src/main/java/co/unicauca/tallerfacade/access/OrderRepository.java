@@ -34,9 +34,9 @@ public class OrderRepository implements IOrderRepository {
             if (order == null || order.getDespatch() < 0 || order.getCustomer() == null) {
                 return false;
             }
-            this.connect();
+            //this.connect();
 
-            String sql = "INSERT INTO Order (despatch, customername, state ) "
+            String sql = "INSERT INTO Orders (despatch, customername, orderstate ) "
                     + "VALUES ( ?, ?, ? )";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class OrderRepository implements IOrderRepository {
             pstmt.setString(2, order.getCustomer().getName());
             pstmt.setString(3, order.getState().toString());
             pstmt.executeUpdate();
-            this.disconnect();
+            //this.disconnect();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(Provider.Service.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,10 +54,10 @@ public class OrderRepository implements IOrderRepository {
     
     private void initDatabase() {
         // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS Order (\n"
+        String sql = "CREATE TABLE IF NOT EXISTS Orders (\n"
                 + "	despatch integer PRIMARY KEY,\n"
                 + "	customername text NOT NULL,\n"
-                + "	state text NOT NULL\n"
+                + "	orderstate text NOT NULL\n"
                 + ");";
 
         try {
@@ -65,7 +65,7 @@ public class OrderRepository implements IOrderRepository {
             Statement stmt = conn.createStatement();
             stmt.execute(sql);
             
-            this.disconnect();
+            //this.disconnect();
 
         } catch (SQLException ex) {
             Logger.getLogger(Provider.Service.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,7 +74,7 @@ public class OrderRepository implements IOrderRepository {
 
     public void connect() {
         // SQLite connection string
-        //String url = "jdbc:sqlite:./tallerfacadedb.db";
+        //String url = "jdbc:sqlite:./tallerfacadeproxydb.db";
         String url = "jdbc:sqlite::memory:";
 
         try {

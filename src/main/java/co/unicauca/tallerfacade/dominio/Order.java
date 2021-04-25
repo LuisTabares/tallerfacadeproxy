@@ -21,13 +21,13 @@ public class Order {
     private ArrayList<Item> details;
     
     public Order(Customer customer) {            
+        this.date = LocalDate.now();
+        
         Random r = new Random();
         String despatchStr = Integer.toString(customer.getId()) + Integer.toString(date.getDayOfYear()) + Integer.toString(r.nextInt(101));
         this.despatch = Integer.parseInt(despatchStr);
         
         this.customer = customer;
-        
-        this.date = LocalDate.now();
         
         this.state = State.NEW;
         
