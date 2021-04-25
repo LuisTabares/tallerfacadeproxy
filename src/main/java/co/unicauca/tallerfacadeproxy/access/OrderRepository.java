@@ -1,7 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2021 Luis Tabares
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package co.unicauca.tallerfacadeproxy.access;
 
@@ -16,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Repositorio que permite acceder a una base de datos de la clase Order
  * @author Luis Tabares
  */
 public class OrderRepository implements IOrderRepository {
@@ -26,7 +38,7 @@ public class OrderRepository implements IOrderRepository {
     public OrderRepository() {
         initDatabase();
     }
-    
+
     @Override
     public boolean saveOrder(Order order) {
         try {
@@ -51,7 +63,10 @@ public class OrderRepository implements IOrderRepository {
         }
         return false;
     }
-    
+
+    /**
+     * Metodo que inicializa la base de datos
+     */
     private void initDatabase() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS Orders (\n"
@@ -64,14 +79,16 @@ public class OrderRepository implements IOrderRepository {
             this.connect();
             Statement stmt = conn.createStatement();
             stmt.execute(sql);
-            
-            //this.disconnect();
 
+            //this.disconnect();
         } catch (SQLException ex) {
             Logger.getLogger(Provider.Service.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Metodo que conecta la base de datos
+     */
     public void connect() {
         // SQLite connection string
         //String url = "jdbc:sqlite:./tallerfacadeproxydb.db";
@@ -85,6 +102,9 @@ public class OrderRepository implements IOrderRepository {
         }
     }
 
+    /**
+     * Metodo que desconecta la base de datos
+     */
     public void disconnect() {
         try {
             if (conn != null) {

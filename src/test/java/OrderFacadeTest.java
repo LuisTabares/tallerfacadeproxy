@@ -15,39 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package co.unicauca.tallerfacadeproxy.presentacion;
-
-import co.unicauca.tallerfacadeproxy.access.Factory;
-import co.unicauca.tallerfacadeproxy.access.IOrderRepository;
 import co.unicauca.tallerfacadeproxy.dominio.Customer;
 import co.unicauca.tallerfacadeproxy.dominio.Dish;
 import co.unicauca.tallerfacadeproxy.dominio.OrderFacade;
 import co.unicauca.tallerfacadeproxy.dominio.State;
+import static junit.framework.Assert.assertEquals;
+import org.junit.Test;
 
 /**
- * Cliente que llama a los servicios de la fachada
- *
- * @author Libardo Pantoja, Julio A. Hurtado
+ * Clase que permite testear OrderFacade
+ * @author Luis Tabares
  */
-public class Main {
+public class OrderFacadeTest {
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void testCreateOrder() {
         OrderFacade facade = new OrderFacade();
         facade.createOrder(new Customer(1, "Carlos Sanchez", "Calle 12 No. 12-12 Barrio Caldas", "3115677899", "Popayán"));
         facade.addDish(new Dish(1, "Hamburguesa vegetariana", 5000), 2);
-        facade.addDish(new Dish(2, "Hamburguesa sencilla", 4000), 3);
-        facade.addDish(new Dish(3, "Jugo hit", 1000), 2);
-        System.out.println("Pedido creado");
-        facade.changeState(State.CONFIRMED);
-        System.out.println("Se cambio el estado a " + facade.getOrder().getState());
-        facade.changeState(State.DISPACHED);
-        System.out.println("Se cambio el estado a " + facade.getOrder().getState());
+        facade.addDish(new Dish(2, "Hamburguesa sencilla ", 4000), 3);
+        facade.addDish(new Dish(3, "Jugo hit ", 1000), 2);
+        assertEquals("Hamburguesa vegetariana", facade.getOrder().getDetails().get(0).getDish().getName());
+        assertEquals(State.NEW, facade.getOrder().getState());
         facade.changeState(State.FINALIZED);
-        System.out.println("Se cambio el estado a " + facade.getOrder().getState());
-        System.out.println("El valor total del pedido es: " + facade.calculateTotal());
-        System.out.println("Total de platos pedidos: " + facade.totalDishes());
-        IOrderRepository repo = Factory.getInstance().getRepository("default");
-        facade.save(repo);
-        System.out.println("Pedido grabado con éxito en la base de datos");
+        assertEquals(State.FINALIZED, facade.getOrder().getState());
+        assertEquals(3, facade.totalDishes());
+        assertEquals(24000, facade.calculateTotal()); //25500
+        facade.cancelOrder();
+        facade.changeState(State.CANCELLED);
     }
 }
