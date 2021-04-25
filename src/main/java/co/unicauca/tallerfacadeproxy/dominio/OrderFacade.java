@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.unicauca.tallerfacade.dominio;
+package co.unicauca.tallerfacadeproxy.dominio;
 
-import co.unicauca.tallerfacade.access.IOrderRepository;
+import co.unicauca.tallerfacadeproxy.access.IOrderRepository;
 
 
 /**

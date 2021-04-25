@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.unicauca.tallerfacade.presentacion;
+package co.unicauca.tallerfacadeproxy.presentacion;
 
-import co.unicauca.tallerfacade.access.Factory;
-import co.unicauca.tallerfacade.access.IOrderRepository;
-import co.unicauca.tallerfacade.dominio.Customer;
-import co.unicauca.tallerfacade.dominio.Dish;
-import co.unicauca.tallerfacade.dominio.OrderFacade;
-import co.unicauca.tallerfacade.dominio.State;
+import co.unicauca.tallerfacadeproxy.access.Factory;
+import co.unicauca.tallerfacadeproxy.access.IOrderRepository;
+import co.unicauca.tallerfacadeproxy.dominio.Customer;
+import co.unicauca.tallerfacadeproxy.dominio.Dish;
+import co.unicauca.tallerfacadeproxy.dominio.OrderFacade;
+import co.unicauca.tallerfacadeproxy.dominio.State;
 
 /**
  * Cliente que llama a los servicios de la facada
