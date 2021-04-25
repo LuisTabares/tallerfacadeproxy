@@ -9,6 +9,7 @@ import co.unicauca.tallerfacade.dominio.Order;
 import java.security.Provider;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -28,16 +29,35 @@ public class OrderRepository implements IOrderRepository {
     
     @Override
     public boolean saveOrder(Order order) {
-        
+        try {
+            //Validate product
+            if (order == null || order.getDespatch() < 0 || order.getCustomer() == null) {
+                return false;
+            }
+            this.connect();
+
+            String sql = "INSERT INTO Order (despatch, customername, state ) "
+                    + "VALUES ( ?, ?, ? )";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, order.getDespatch());
+            pstmt.setString(2, order.getCustomer().getName());
+            pstmt.setString(3, order.getState().toString());
+            pstmt.executeUpdate();
+            this.disconnect();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Provider.Service.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
     
     private void initDatabase() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS Order (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	name text NOT NULL,\n"
-                + "	price integer,\n"
-                + "	type text NOT NULL\n"
+                + "	despatch integer PRIMARY KEY,\n"
+                + "	customername text NOT NULL,\n"
+                + "	state text NOT NULL\n"
                 + ");";
 
         try {

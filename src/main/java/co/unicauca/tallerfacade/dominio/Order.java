@@ -7,6 +7,7 @@ package co.unicauca.tallerfacade.dominio;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -17,10 +18,24 @@ public class Order {
     private Customer customer;
     private LocalDate date;
     private State state;
-    private ArrayList<Item> details; !!Preguntar¡¡¡
+    private ArrayList<Item> details;
     
-    public Order(Customer customer) {
+    public Order(Customer customer) {            
+        Random r = new Random();
+        String despatchStr = Integer.toString(customer.getId()) + Integer.toString(date.getDayOfYear()) + Integer.toString(r.nextInt(101));
+        this.despatch = Integer.parseInt(despatchStr);
+        
         this.customer = customer;
+        
+        this.date = LocalDate.now();
+        
+        this.state = State.NEW;
+        
+        this.details = new ArrayList<Item>();
+    }
+    
+    public int getDespatch() {
+        return this.despatch;
     }
     
     public Customer getCustomer() {

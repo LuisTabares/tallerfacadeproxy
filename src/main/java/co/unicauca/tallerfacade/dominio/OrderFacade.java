@@ -5,6 +5,9 @@
  */
 package co.unicauca.tallerfacade.dominio;
 
+import co.unicauca.tallerfacade.access.IOrderRepository;
+
+
 /**
  *
  * @author Luis Tabares
@@ -44,7 +47,9 @@ public class OrderFacade {
         return this.order.getDetails().size();
     }
     
-    public void save(IOrderRepository repo){
+    public void save(IOrderRepository repo) throws Exception{
+        OrderService orderService = new OrderService(repo);
         
+        orderService.saveOrder(this.getOrder());
     }
 }
