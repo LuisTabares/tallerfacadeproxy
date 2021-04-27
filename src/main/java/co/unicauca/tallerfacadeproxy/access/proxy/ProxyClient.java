@@ -15,23 +15,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package co.unicauca.tallerfacadeproxy.access;
+package co.unicauca.tallerfacadeproxy.access.proxy;
 
-import co.unicauca.tallerfacadeproxy.dominio.Order;
+import co.unicauca.tallerfacadeproxy.access.Factory;
+import co.unicauca.tallerfacadeproxy.access.IOrderRepository;
 
 /**
- * Interzaz de OrderRepository que implementa el principio de inversion de
- * dependencias
- *
+ * Clase proxy que permite almacenar en un repositorio local o remoto una orden 
  * @author Luis Tabares
  */
-public interface IOrderRepository {
-
+public class ProxyClient {
+    private IOrderService orderService;
+    
     /**
-     * Metodo que guarda una orden en el reposotorio
-     *
-     * @param order la orden a guardar en el repositorio
-     * @return si pudo o no ser guardada la orden en el repositorio
+     * Constructor parametrizado
+     * @param orderService instancia abstracta de la jerarquia IOrderService
      */
-    public boolean createOrder(Order order);
+    public ProxyClient(IOrderService orderService) {
+        this.orderService = orderService;
+    }
+    
+    public void createOrder() {
+        IOrderRepository repo = Factory.getInstance().getRepository("default");
+        this.orderService.save(repo);
+    } 
 }

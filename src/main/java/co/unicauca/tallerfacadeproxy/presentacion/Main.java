@@ -19,6 +19,9 @@ package co.unicauca.tallerfacadeproxy.presentacion;
 
 import co.unicauca.tallerfacadeproxy.access.Factory;
 import co.unicauca.tallerfacadeproxy.access.IOrderRepository;
+import co.unicauca.tallerfacadeproxy.access.proxy.IOrderService;
+import co.unicauca.tallerfacadeproxy.access.proxy.OrderServiceLogger;
+import co.unicauca.tallerfacadeproxy.access.proxy.ProxyClient;
 import co.unicauca.tallerfacadeproxy.dominio.Customer;
 import co.unicauca.tallerfacadeproxy.dominio.Dish;
 import co.unicauca.tallerfacadeproxy.dominio.OrderFacade;
@@ -32,6 +35,39 @@ import co.unicauca.tallerfacadeproxy.dominio.State;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        //Main.testFacade();
+        Main.testProxy();
+    }
+    
+    public static void testProxy() {
+        //El sujeto real.
+        OrderFacade orderFacade = new OrderFacade();
+
+        //El objeto proxy. Se le pasa el objeto real por el constructor (inyección)
+        IOrderService orderProxy = new OrderServiceLogger(orderFacade);
+
+        //Se opera normal el sujeto real
+
+        orderFacade.createOrder(new Customer(1, "Carlos Sanchez", "Calle 12 No. 12-12 Barrio Caldas", "3115677899", "Popayán"));
+        orderFacade.addDish(new Dish(1, "Hamburguesa vegetariana", 5000), 2);
+        orderFacade.addDish(new Dish(2, "Hamburguesa sencilla", 4000), 3);
+        orderFacade.addDish(new Dish(3, "Jugo hit", 1000), 2);
+        System.out.println("Pedido creado");
+        orderFacade.changeState(State.CONFIRMED);
+        System.out.println("Se cambio el estado a " + orderFacade.getOrder().getState());
+        orderFacade.changeState(State.DISPACHED);
+        System.out.println("Se cambio el estado a " + orderFacade.getOrder().getState());
+        orderFacade.changeState(State.FINALIZED);
+        System.out.println("Se cambio el estado a " + orderFacade.getOrder().getState());
+        System.out.println("El valor total del pedido es: " + orderFacade.calculateTotal());
+        System.out.println("Total de platos pedidos: " + orderFacade.totalDishes());
+
+        //Ahora ejecutamos el cliente proxy, y le pasamos el sujeto que debe utilizar.
+        ProxyClient client = new ProxyClient(orderProxy);
+        client.createOrder();
+    }
+    
+    public static void testFacade() throws Exception {
         OrderFacade facade = new OrderFacade();
         facade.createOrder(new Customer(1, "Carlos Sanchez", "Calle 12 No. 12-12 Barrio Caldas", "3115677899", "Popayán"));
         facade.addDish(new Dish(1, "Hamburguesa vegetariana", 5000), 2);

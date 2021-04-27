@@ -15,38 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package co.unicauca.tallerfacadeproxy.dominio;
+package co.unicauca.tallerfacadeproxy.access.proxy;
 
 import co.unicauca.tallerfacadeproxy.access.IOrderRepository;
 
 /**
- * Clase OrderService que sirve para obtener una instancia abstracta del
- * repositorio de ordenes
- *
+ * Interfaz que implementa el patro proxy para acceder al metodo que guarda
+ * en un repositorio
  * @author Luis Tabares
  */
-public class OrderService {
-
-    private final IOrderRepository service;
-
+public interface IOrderService {
     /**
-     * Constructor privado que evita que otros objetos instancien
-     *
-     * @param service implementacion de tipo IOrderService
+     * Metodo que permite guardar en un repositorio sea que este este de forma
+     * local o remota
+     * @param repo el perositorio en el que se guardara
      */
-    public OrderService(IOrderRepository service) {
-        this.service = service;
-    }
-
-    /**
-     * Mrtodo que guarda la orden
-     *
-     * @param order la orden que va a ser guardada
-     * @return si la orden pudo ser guardada o no
-     * @throws Exception si hubo algun problema con la base de datos
-     */
-    public boolean saveOrder(Order order) throws Exception {
-        return service.saveOrder(order);
-
-    }
+    public void save(IOrderRepository repo);
 }

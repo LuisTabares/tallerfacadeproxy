@@ -105,8 +105,6 @@ public class OrderFacade {
      * de datos
      */
     public void save(IOrderRepository repo) throws Exception {
-        OrderService orderService = new OrderService(repo);
-
-        orderService.saveOrder(this.getOrder());
+        repo.createOrder(this.getOrder());
     }
 }

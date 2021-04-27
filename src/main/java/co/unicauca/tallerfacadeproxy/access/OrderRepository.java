@@ -40,7 +40,7 @@ public class OrderRepository implements IOrderRepository {
     }
 
     @Override
-    public boolean saveOrder(Order order) {
+    public boolean createOrder(Order order) {
         try {
             //Validate product
             if (order == null || order.getDespatch() < 0 || order.getCustomer() == null) {
